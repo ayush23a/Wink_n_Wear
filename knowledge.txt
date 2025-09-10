@@ -1,0 +1,46 @@
+Project Name: Wink & Wear - A 3D Social Fashion Metaverse
+
+Slogan: "The next-gen closet is digital."
+
+Purpose: An AI-powered online fashion styling platform that aims to transform online fashion by connecting users with expert stylists and integrating advanced AI and AR technologies. It is the vibrant heart of the metaverse, where users can explore, connect, and define their digital identity.
+
+Key Features
+Personalized AI Styling: A smart fashion assistant that uses AI to analyze a user's body type, style preferences, and even the weather to recommend perfect outfits and accessories. It's a hybrid approach that uses both AI and human stylists for the best advice.
+
+Virtual Try-On: A "magical mirror" that uses Augmented Reality (AR) and a webcam to let users see how new clothes would look on them before they buy.
+
+Digital Wardrobe Management: A "digital closet" where users can upload pictures of their clothes. The platform organizes them and uses AI to suggest new outfits by mixing and matching existing items.
+
+AI Chatbot & Real-Time Chat: The "AI Chatbot," known as "The Oracle," is a super-smart robot available 24/7 to help with fashion questions. Users can also use the "Real-time Chat" feature to talk to a real human stylist.
+
+Voice Assistant: A feature that allows users to talk to the platform just like a friend, using their voice to ask for help.
+
+Role-Based Platform: The platform is designed with three different user roles:
+
+Users: The main audience who manages their profile, digital closet, and receives recommendations.
+
+Stylists: Fashion professionals who have a special dashboard to manage clients and provide advice.
+
+Admins: The team that manages the users and stylists to ensure the platform runs smoothly.
+
+Monetization & Subscriptions: The platform offers subscriptions to give users special access to more advanced AI tools and professional stylists. It may also earn money by recommending products from different stores.
+
+Website Navigation & Sections
+The platform is organized into six main sections:
+
+The Nexus (Home Page): The central hub where the user's journey begins. From here, they can explore featured collections and their digital closet.
+
+The Atelier (Avatar & Wardrobe): The personal design studio for sculpting an avatar and curating a wardrobe. It includes a "Digital Mirror" and "Customization Tools."
+
+The Runway (Collections & Shop): The section for discovering and acquiring new fashion items. Users can buy both digital and physical versions of items.
+
+Social Lounges: Community spaces for connecting, collaborating, and showing off style. Users can join themed lounges or create private rooms to share digital closets with friends.
+
+Chronos Gallery (About): An interactive data-stream detailing the project's journey, including key milestones and a future vision for a User-Generated Content (UGC) Design Studio.
+
+The Oracle (Chatbot): The contact and support section, where the AI concierge "The Oracle" assists with navigation, avatar customization, and general questions.
+
+Technical & Team Details
+Technology Stack: The frontend is built with React.js/Next.js, and the backend uses Python/Django. It relies on a PostgreSQL database, Cloudinary/Firebase for media storage, and key AI/AR services like the Gemini API, Cloud Vision API, and WebAR.js.
+
+Team: The project team, named "Team Shaolins," includes Tanishq Singh (Project Lead), Ayush Aman, Sayan Roy Chowdhury, and Abhijeet Kumar.

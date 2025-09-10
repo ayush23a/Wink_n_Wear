@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wink & Wear - A 3D Social Fashion Metaverse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0f;
+            color: #e0e0e0;
+            overflow: hidden; /* Hide scrollbars during load */
+        }
+        
+        /* --- LOADER STYLES --- */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #0a0a0f;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        #loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .bloom-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: #f0f; /* Magenta */
+            border-radius: 50%;
+            animation: swirl 3s infinite ease-in-out;
+            box-shadow: 0 0 5px #f0f, 0 0 10px #f0f, 0 0 15px #f0f;
+        }
+
+        @keyframes swirl {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1) rotate(180deg); opacity: 1; }
+            100% { transform: scale(0) rotate(360deg); opacity: 0; }
+        }
+        
+        #logo-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: bloom 3s forwards;
+            transform: scale(0);
+            opacity: 0;
+        }
+
+        @keyframes bloom {
+            0% { transform: scale(0.2); opacity: 0; }
+            70% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .logo-text {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 5px #fff;
+        }
+
+
+        /* --- GENERAL STYLES --- */
+        .section-container {
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .section-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .glass-pane {
+            background: rgba(17, 24, 39, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+        }
+        
+        .neon-text-magenta {
+            text-shadow: 0 0 5px #f0f, 0 0 10px #f0f;
+        }
+
+        .neon-text-blue {
+            text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+        }
+        
+        .neon-text-green {
+            text-shadow: 0 0 5px #0f0, 0 0 10px #0f0;
+        }
+        
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            color: #fff;
+            border-bottom-color: #f0f; /* Magenta */
+            text-shadow: 0 0 8px #f0f;
+        }
+        
+        .holographic-button {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+        }
+        
+        .holographic-button:hover {
+            background: rgba(0, 255, 255, 0.25);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+        
+        /* Custom scrollbar for chat */
+        .chat-box::-webkit-scrollbar {
+          width: 6px;
+        }
+        .chat-box::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 3px;
+        }
+        .chat-box::-webkit-scrollbar-thumb {
+          background: #f0f;
+          border-radius: 3px;
+        }
+        .chat-box::-webkit-scrollbar-thumb:hover {
+          background: #c0c;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <!-- Loader -->
+    <div id="loader">
+        <div class="bloom-container">
+            <div id="logo-container">
+                <span class="logo-text">Wink And Wear</span>
+            </div>
+            <!-- Particles for effect -->
+            <script>
+                const container = document.querySelector('.bloom-container');
+                for (let i = 0; i < 20; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    const size = Math.random() * 8 + 2;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.top = `${Math.random() * 100}%`;
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.animationDelay = `${Math.random() * 3}s`;
+                    particle.style.animationDuration = `${Math.random() * 2 + 2}s`;
+                    container.appendChild(particle);
+                }
+            </script>
+        </div>
+    </div>
+    
+    <!-- Main Application Wrapper -->
+    <div id="app-wrapper" class="h-screen w-full flex flex-col opacity-0 transition-opacity duration-1000">
+        <!-- Background Effect -->
+        <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 z-0"></div>
+
+        <!-- Header Navigation -->
+        <header class="w-full p-4 z-10">
+            <nav class="glass-pane max-w-7xl mx-auto p-3 flex justify-between items-center">
+                <a href="#" class="text-2xl font-bold neon-text-magenta" data-section="nexus">Wink And Wear</a>
+                <div class="hidden md:flex items-center space-x-8 text-gray-400 font-medium">
+                    <a href="#" class="nav-link active" data-section="nexus">The Nexus</a>
+                    <a href="#" class="nav-link" data-section="atelier">The Atelier</a>
+                    <a href="#" class="nav-link" data-section="runway">The Runway</a>
+                    <a href="#" class="nav-link" data-section="lounges">Social Lounges</a>
+                    <a href="#" class="nav-link" data-section="gallery">Chronos Gallery</a>
+                    <a href="#" class="nav-link" data-section="oracle">The Oracle</a>
+                </div>
+                 <button id="mobile-menu-button" class="md:hidden p-2 rounded-md holographic-button">
+                    <i data-lucide="menu"></i>
+                </button>
+            </nav>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-2 glass-pane p-4 rounded-lg">
+                <a href="#" class="block py-2 text-center nav-link active" data-section="nexus">The Nexus</a>
+                <a href="#" class="block py-2 text-center nav-link" data-section="atelier">The Atelier</a>
+                <a href="#" class="block py-2 text-center nav-link" data-section="runway">The Runway</a>
+                <a href="#" class="block py-2 text-center nav-link" data-section="lounges">Social Lounges</a>
+                <a href="#" class="block py-2 text-center nav-link" data-section="gallery">Chronos Gallery</a>
+                <a href="#" class="block py-2 text-center nav-link" data-section="oracle">The Oracle</a>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-grow overflow-y-auto p-4 md:p-8">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- The Nexus (Home Page) -->
+                <section id="nexus" class="section-container active">
+                    <div class="text-center">
+                        <h1 class="text-4xl md:text-6xl font-extrabold text-white neon-text-blue">Welcome to The Nexus</h1>
+                        <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-300">The vibrant heart of Wink & Wear. Your journey into the future of fashion begins here. Explore, connect, and define your digital identity.</p>
+                    </div>
+
+                    <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Featured Collection -->
+                        <div class="glass-pane p-6 text-center hover:border-magenta-500 transition-colors duration-300 transform hover:-translate-y-1">
+                            <div class="flex justify-center text-magenta-400"><i data-lucide="sparkles" class="w-12 h-12 neon-text-magenta"></i></div>
+                            <h2 class="mt-4 text-2xl font-bold text-white">Featured Collections</h2>
+                            <p class="mt-2 text-gray-400">Witness the latest in cyber-couture. AI-driven avatars showcase groundbreaking designs on a dynamic, ever-changing runway.</p>
+                             <button class="mt-4 holographic-button py-2 px-4 rounded-lg font-semibold nav-link-btn" data-section="runway">Visit The Runway</button>
+                        </div>
+
+                        <!-- Community Spotlight -->
+                        <div class="glass-pane p-6 text-center hover:border-emerald-500 transition-colors duration-300 transform hover:-translate-y-1">
+                            <div class="flex justify-center text-emerald-400"><i data-lucide="users" class="w-12 h-12 neon-text-green"></i></div>
+                            <h2 class="mt-4 text-2xl font-bold text-white">Community Spotlight</h2>
+                            <p class="mt-2 text-gray-400">Discover trending outfits created by the community. Socialize in themed lounges and collaborate on styles with friends.</p>
+                             <button class="mt-4 holographic-button py-2 px-4 rounded-lg font-semibold nav-link-btn" data-section="lounges">Enter Social Lounges</button>
+                        </div>
+
+                        <!-- Avatar Studio -->
+                        <div class="glass-pane p-6 text-center hover:border-cyan-500 transition-colors duration-300 transform hover:-translate-y-1 md:col-span-2 lg:col-span-1">
+                            <div class="flex justify-center text-cyan-400"><i data-lucide="user-cog" class="w-12 h-12 neon-text-blue"></i></div>
+                            <h2 class="mt-4 text-2xl font-bold text-white">Your Digital Closet</h2>
+                            <p class="mt-2 text-gray-400">Step into The Atelier to sculpt your avatar and curate your wardrobe. Your unique expression awaits.</p>
+                            <button class="mt-4 holographic-button py-2 px-4 rounded-lg font-semibold nav-link-btn" data-section="atelier">Design Your Avatar</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- The Atelier (Avatar & Wardrobe) -->
+                <section id="atelier" class="section-container">
+                    <div class="text-center mb-12">
+                        <h1 class="text-4xl md:text-6xl font-extrabold text-white neon-text-blue">The Atelier</h1>
+                        <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-300">Your personal design studio. Sculpt, style, and save. This is where your identity takes form.</p>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                        <div class="lg:col-span-3 glass-pane p-6 flex flex-col items-center justify-center">
+                            <h2 class="text-2xl font-bold mb-4 text-center">Digital Mirror</h2>
+                            <div class="w-full max-w-sm h-96 bg-black/20 rounded-lg flex items-center justify-center border border-white/10">
+                                <img src="https://placehold.co/250x400/0a0a0f/ffffff?text=Your+Avatar" alt="Avatar Placeholder" class="object-cover h-full">
+                            </div>
+                             <p class="mt-4 text-sm text-gray-400 text-center">Instantly try on items from your Digital Closet.</p>
+                        </div>
+                        <div class="lg:col-span-2 glass-pane p-6">
+                            <h2 class="text-2xl font-bold mb-4 text-center">Customization Tools</h2>
+                             <div class="space-y-4">
+                                <h3 class="font-semibold text-lg text-cyan-300">Base Form</h3>
+                                <div class="flex space-x-2">
+                                     <button class="flex-1 holographic-button py-2 px-4 rounded-lg">Male</button>
+                                     <button class="flex-1 holographic-button py-2 px-4 rounded-lg">Female</button>
+                                </div>
+                                <h3 class="font-semibold text-lg text-cyan-300 mt-6">Facial Sculpting</h3>
+                                <input type="range" class="w-full" />
+                                <h3 class="font-semibold text-lg text-cyan-300 mt-6">Hair Style</h3>
+                                <select class="w-full bg-gray-800 border border-gray-600 rounded-lg p-2">
+                                    <option>Cyber-Punk Bob</option>
+                                    <option>Holographic Dreads</option>
+                                    <option>Bioluminescent Braid</option>
+                                </select>
+                                <h3 class="font-semibold text-lg text-cyan-300 mt-6">AI Stylist</h3>
+                                 <p class="text-sm text-gray-400">Get outfit suggestions based on your inventory.</p>
+                                <button class="w-full holographic-button py-2 px-4 rounded-lg font-semibold flex items-center justify-center space-x-2"><i data-lucide="wand-2"></i><span>Suggest Outfit</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- The Runway (Collections & Shop) -->
+                <section id="runway" class="section-container">
+                    <div class="text-center mb-12">
+                        <h1 class="text-4xl md:text-6xl font-extrabold text-white neon-text-magenta">The Runway</h1>
+                        <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-300">Discover and acquire the future of fashion. Every piece tells a story. Find yours.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Product Card -->
+                        <div class="glass-pane overflow-hidden group">
+                            <img src="https://placehold.co/600x800/111827/f0f?text=Cybernetic+Trench" alt="Fashion Item" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold">Cybernetic Trench</h3>
+                                <p class="text-gray-400 text-sm">A fusion of hard-light fabric and adaptive nano-weave.</p>
+                                <div class="mt-4 flex space-x-2">
+                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm">Buy Digital</button>
+                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm">Buy Physical</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card -->
+                        <div class="glass-pane overflow-hidden group">
+                            <img src="https://placehold.co/600x800/111827/0ff?text=Gravity+Boots" alt="Fashion Item" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold">Gravity Boots</h3>
+                                <p class="text-gray-400 text-sm">Sleek footwear with micro-repulsor soles for a lighter step.</p>
+                                 <div class="mt-4 flex space-x-2">
+                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm">Buy Digital</button>
+                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm">Buy Physical</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Card -->
+                        <div class="glass-pane overflow-hidden group">
+                            <img src="https://placehold.co/600x800/111827/0f0?text=Solarpunk+Visor" alt="Fashion Item" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold">Solarpunk Visor</h3>
+                                <p class="text-gray-400 text-sm">AR-enabled visor with a frame grown from bio-polymers.</p>
+                                 <div class="mt-4 flex space-x-2">
+                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm">Buy Digital</button>
+                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm">Buy Physical</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- The Social Lounges -->
+                <section id="lounges" class="section-container">
+                    <div class="text-center mb-12">
+                        <h1 class="text-4xl md:text-6xl font-extrabold text-white neon-text-green">Social Lounges</h1>
+                        <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-300">Connect, collaborate, and show off your style. Find your tribe in our themed social hubs.</p>
+                    </div>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="glass-pane p-6">
+                           <h2 class="text-2xl font-bold text-center mb-4">Join a Lounge</h2>
+                           <div class="space-y-3">
+                               <div class="p-4 bg-black/20 rounded-lg flex justify-between items-center">
+                                   <div>
+                                       <h3 class="font-semibold">The Observatory (Zero-G)</h3>
+                                       <p class="text-sm text-gray-400">127 Users Online</p>
+                                   </div>
+                                   <button class="holographic-button py-1 px-3 rounded-lg text-sm">Join</button>
+                               </div>
+                               <div class="p-4 bg-black/20 rounded-lg flex justify-between items-center">
+                                   <div>
+                                       <h3 class="font-semibold">The Geode (Ambient)</h3>
+                                       <p class="text-sm text-gray-400">88 Users Online</p>
+                                   </div>
+                                   <button class="holographic-button py-1 px-3 rounded-lg text-sm">Join</button>
+                               </div>
+                               <div class="p-4 bg-black/20 rounded-lg flex justify-between items-center">
+                                   <div>
+                                       <h3 class="font-semibold">The Solarium (Garden)</h3>
+                                       <p class="text-sm text-gray-400">204 Users Online</p>
+                                   </div>
+                                   <button class="holographic-button py-1 px-3 rounded-lg text-sm">Join</button>
+                               </div>
+                           </div>
+                        </div>
+                        <div class="glass-pane p-6">
+                            <h2 class="text-2xl font-bold text-center mb-4">Friends' Digital Closet</h2>
+                            <div class="flex flex-col items-center justify-center h-full text-center">
+                                <i data-lucide="share-2" class="w-16 h-16 text-green-400 neon-text-green"></i>
+                                <p class="mt-4 text-gray-300">Create a private room to invite friends. Share and browse each other's closets in real-time to coordinate your next look.</p>
+                                <button class="mt-6 holographic-button py-2 px-6 rounded-lg font-semibold">Create Private Room</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- The Chronos Gallery (About) -->
+                <section id="gallery" class="section-container">
+                    <div class="text-center mb-12">
+                        <h1 class="text-4xl md:text-6xl font-extrabold text-white neon-text-blue">The Chronos Gallery</h1>
+                        <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-300">An interactive data-stream of our journey. Explore our past, present, and future vision.</p>
+                    </div>
+                    <div class="relative pl-8 border-l-2 border-cyan-500/30">
+                        <!-- Timeline Item -->
+                        <div class="mb-12">
+                            <div class="absolute w-6 h-6 bg-cyan-400 rounded-full -left-3 border-4 border-gray-900"></div>
+                            <p class="text-cyan-300 font-semibold">Q2 2024 - The Spark</p>
+                            <h3 class="text-2xl font-bold mt-1">Concept Inception</h3>
+                            <p class="mt-2 text-gray-400">The idea of a 'Cyber-Glam' metaverse is born, aiming to merge high fashion with social digital interaction.</p>
+                        </div>
+                         <!-- Timeline Item -->
+                        <div class="mb-12">
+                            <div class="absolute w-6 h-6 bg-cyan-400 rounded-full -left-3 border-4 border-gray-900"></div>
+                            <p class="text-cyan-300 font-semibold">Q4 2024 - Genesis Build</p>
+                            <h3 class="text-2xl font-bold mt-1">Core Engine Development</h3>
+                            <p class="mt-2 text-gray-400">The Nexus and Atelier environments are developed, focusing on avatar customization and fluid cloth physics.</p>
+                        </div>
+                        <!-- Timeline Item -->
+                        <div class="mb-12">
+                            <div class="absolute w-6 h-6 bg-cyan-400 rounded-full -left-3 border-4 border-gray-900"></div>
+                            <p class="text-cyan-300 font-semibold">Q2 2025 - Alpha Launch</p>
+                            <h3 class="text-2xl font-bold mt-1">Wink & Wear Goes Live</h3>
+                            <p class="mt-2 text-gray-400">The platform opens to a select group of users, introducing the first digital collections and social lounges.</p>
+                        </div>
+                         <!-- Timeline Item -->
+                        <div>
+                            <div class="absolute w-6 h-6 bg-white rounded-full -left-3 border-4 border-gray-900 animate-pulse"></div>
+                            <p class="text-white font-semibold">Future - The Creator Economy</p>
+                            <h3 class="text-2xl font-bold mt-1">UGC Design Studio</h3>
+                            <p class="mt-2 text-gray-400">Our roadmap includes empowering users to design, mint, and sell their own 3D clothing creations, fostering a true creator-driven ecosystem.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- The Oracle (Contact) -->
+                <section id="oracle" class="section-container">
+                    <div class="text-center mb-12">
+                        <h1 class="text-4xl md:text-6xl font-extrabold text-white neon-text-magenta">The Oracle</h1>
+                        <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-300">Seek guidance. Our AI concierge is here to assist you with your journey through the metaverse.</p>
+                    </div>
+                     <div class="max-w-2xl mx-auto glass-pane p-4">
+                        <div id="chat-window" class="h-80 overflow-y-auto p-4 space-y-4 chat-box">
+                            <!-- Chat messages will be appended here -->
+                            <div class="flex items-start space-x-3">
+                                <div class="p-2 rounded-full bg-magenta-500/50"><i data-lucide="sparkle"></i></div>
+                                <div class="bg-black/20 p-3 rounded-lg rounded-tl-none">
+                                    <p class="text-sm">Greetings. I am The Oracle. How may I illuminate your path today?</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex">
+                            <input id="chat-input" type="text" class="flex-grow bg-gray-800 border border-gray-600 rounded-l-lg p-3 focus:outline-none focus:ring-2 focus:ring-magenta-500" placeholder="Ask a question...">
+                            <button id="send-btn" class="holographic-button bg-magenta-500/50 border-magenta-500 px-4 rounded-r-lg font-semibold"><i data-lucide="send"></i></button>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loader = document.getElementById('loader');
+            const appWrapper = document.getElementById('app-wrapper');
+            const navLinks = document.querySelectorAll('.nav-link, .nav-link-btn, a[data-section="nexus"]');
+            const sections = document.querySelectorAll('.section-container');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            // --- Loader Logic ---
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                document.body.style.overflow = 'auto'; // Restore scroll
+                appWrapper.style.opacity = '1';
+            }, 3000); // Simulate loading time
+
+            // --- Navigation Logic ---
+            const setActiveLink = (sectionId) => {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if(link.dataset.section === sectionId) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+
+            const showSection = (sectionId) => {
+                sections.forEach(section => {
+                    if (section.id === sectionId) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+                setActiveLink(sectionId);
+                // Close mobile menu on navigation
+                 if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            };
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sectionId = e.currentTarget.dataset.section;
+                    showSection(sectionId);
+                });
+            });
+
+            // --- Mobile Menu Toggle ---
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // --- Oracle Chatbot Logic ---
+            const chatWindow = document.getElementById('chat-window');
+            const chatInput = document.getElementById('chat-input');
+            const sendBtn = document.getElementById('send-btn');
+            
+            const oracleResponses = {
+                "default": "An interesting query. I will need to meditate on this. For complex issues, please allow me to connect you to a Human Guide.",
+                "hello": "Greetings. Welcome to the data stream. How may I assist?",
+                "help": "I can answer questions about navigation, avatar customization, and the Wink & Wear vision. What would you like to know?",
+                "purchase": "You can acquire both Digital and Physical items on The Runway. Purchasing a Physical item automatically unlocks its Digital Twin in your Atelier.",
+                "avatar": "Visit The Atelier to customize your appearance. Use the Digital Mirror to try on items and the Customization Tools to sculpt your form."
+            };
+
+            const addMessage = (message, sender = 'user') => {
+                const messageDiv = document.createElement('div');
+                if (sender === 'user') {
+                    messageDiv.className = "flex items-start space-x-3 justify-end";
+                    messageDiv.innerHTML = `
+                        <div class="bg-blue-500/20 p-3 rounded-lg rounded-tr-none">
+                            <p class="text-sm">${message}</p>
+                        </div>
+                        <div class="p-2 rounded-full bg-blue-500/50"><i data-lucide="user"></i></div>
+                    `;
+                } else { // Oracle
+                    messageDiv.className = "flex items-start space-x-3";
+                    messageDiv.innerHTML = `
+                        <div class="p-2 rounded-full bg-magenta-500/50"><i data-lucide="sparkle"></i></div>
+                        <div class="bg-black/20 p-3 rounded-lg rounded-tl-none">
+                            <p class="text-sm">${message}</p>
+                        </div>
+                    `;
+                }
+                chatWindow.appendChild(messageDiv);
+                lucide.createIcons(); // Re-render icons
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            };
+
+            const handleSend = async () => {
+                const query = chatInput.value.trim();
+                if (!query) return;
+
+                addMessage(query, 'user');
+                chatInput.value = '';
+
+                // Display a loading indicator
+                const loadingDiv = document.createElement('div');
+                loadingDiv.id = 'oracle-loading';
+                loadingDiv.innerHTML = `
+                    <div class="message-oracle flex items-start space-x-2">
+                        <i data-lucide="bot" class="text-lg animate-pulse text-purple-400"></i>
+                        <div class="bg-black/20 p-3 rounded-lg rounded-tl-none">
+                            <p class="text-sm">...</p>
+                        </div>
+                    </div>
+                `;
+                chatWindow.appendChild(loadingDiv);
+                lucide.createIcons();
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+
+                try {
+                    const response = await fetch('http://127.0.0.1:8000/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ message: query })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    
+                    // Remove loading indicator and add the response
+                    chatWindow.removeChild(document.getElementById('oracle-loading'));
+                    addMessage(data.message, 'oracle');
+
+                } catch (error) {
+                    console.error('Error fetching from backend:', error);
+                    // Remove loading indicator and add an error message
+                    chatWindow.removeChild(document.getElementById('oracle-loading'));
+                    addMessage("I'm sorry, I'm having trouble connecting to my knowledge base right now. Please try again later.", 'oracle');
+                }
+            };
+
+            sendBtn.addEventListener('click', handleSend);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleSend();
+                }
+            });
+
+            // Initial icon render
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
