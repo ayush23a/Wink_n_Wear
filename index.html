@@ -302,37 +302,37 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <!-- Product Card -->
                         <div class="glass-pane overflow-hidden group">
-                            <img src="https://placehold.co/600x800/111827/f0f?text=Cybernetic+Trench" alt="Fashion Item" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="1.jpg" alt="Fashion Item" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="p-4">
                                 <h3 class="text-xl font-bold">Cybernetic Trench</h3>
                                 <p class="text-gray-400 text-sm">A fusion of hard-light fabric and adaptive nano-weave.</p>
                                 <div class="mt-4 flex space-x-2">
-                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm">Buy Digital</button>
-                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm">Buy Physical</button>
+                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm" onclick="male()">Buy Digital</button>
+                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm" onclick="map()">Buy Physical</button>
                                 </div>
                             </div>
                         </div>
                         <!-- Product Card -->
                         <div class="glass-pane overflow-hidden group">
-                            <img src="https://placehold.co/600x800/111827/0ff?text=Gravity+Boots" alt="Fashion Item" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="2.jpg" alt="Fashion Item" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="p-4">
                                 <h3 class="text-xl font-bold">Gravity Boots</h3>
                                 <p class="text-gray-400 text-sm">Sleek footwear with micro-repulsor soles for a lighter step.</p>
                                  <div class="mt-4 flex space-x-2">
-                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm">Buy Digital</button>
-                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm">Buy Physical</button>
+                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm" onclick="boot()">Buy Digital</button>
+                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm" onclick="map2()">Buy Physical</button>
                                 </div>
                             </div>
                         </div>
                         <!-- Product Card -->
                         <div class="glass-pane overflow-hidden group">
-                            <img src="https://placehold.co/600x800/111827/0f0?text=Solarpunk+Visor" alt="Fashion Item" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
+                            <img src="3.jpg" alt="Fashion Item" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="p-4">
                                 <h3 class="text-xl font-bold">Solarpunk Visor</h3>
                                 <p class="text-gray-400 text-sm">AR-enabled visor with a frame grown from bio-polymers.</p>
                                  <div class="mt-4 flex space-x-2">
-                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm">Buy Digital</button>
-                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm">Buy Physical</button>
+                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm" onclick="dress()">Buy Digital</button>
+                                    <button class="flex-1 holographic-button py-2 px-4 rounded-lg text-sm" onclick="map3()">Buy Physical</button>
                                 </div>
                             </div>
                         </div>
@@ -449,6 +449,29 @@
     </div>
 
     <script>
+
+        function boot(){
+            window.location.href = "https://www.nike.com/in/";
+        }
+        function dress(){
+            window.location.href = "https://www.savana.com/";
+        }
+
+        function male(){
+            window.location.href="https://www2.hm.com/";
+        }
+
+        function map(){
+            window.location.href="https://www.google.com/maps/place/H%26M/@22.5391944,88.3519923,12z/data=!4m6!3m5!1s0x3a027795633cd447:0x8e91f70773dee29c!8m2!3d22.5391944!4d88.3519923!16s%2Fg%2F11f0_bt3t3?entry=ttu&g_ep=EgoyMDI1MDkwOC4wIKXMDSoASAFQAw%3D%3D";
+        }
+
+        function map2(){
+            window.location.href="https://www.google.com/maps/place/NIKE/@22.5888623,88.405798,17z/data=!3m2!4b1!5s0x3a0275dd798c358f:0x299ce8170a1cc4a1!4m6!3m5!1s0x3be7c84b4dae9b99:0xa09524013cbf9983!8m2!3d22.5888574!4d88.4083729!16s%2Fg%2F1t_kd_2r?entry=ttu&g_ep=EgoyMDI1MDkwOC4wIKXMDSoASAFQAw%3D%3D";
+        }
+
+        function map3(){
+            window.location.href="https://www.google.com/maps/place/Westside+-+Mani+Square+Mall,+Kolkata/@22.5777989,88.3974755,17z/data=!3m2!4b1!5s0x3a027677bf16c1bd:0xce0327584a492964!4m6!3m5!1s0x3a02779ed721d191:0xc487dcc472384fa9!8m2!3d22.577794!4d88.4000504!16s%2Fg%2F1tfzkrs4?entry=ttu&g_ep=EgoyMDI1MDkwOC4wIKXMDSoASAFQAw%3D%3D";
+        }
         document.addEventListener('DOMContentLoaded', () => {
             const loader = document.getElementById('loader');
             const appWrapper = document.getElementById('app-wrapper');

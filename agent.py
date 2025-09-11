@@ -1,26 +1,13 @@
 import streamlit as st
 import google.generativeai as genai
 import os
-from dotenv import load_dotenv # Import load_dotenv
+from dotenv import load_dotenv
 
-# --- Instructions ---
-# 1. Make sure you have installed the necessary libraries:
-#    pip install google-generativeai python-dotenv
-#
-# 2. Create a new file named ".env" in the SAME directory as this script.
-#
-# 3. Open the ".env" file and add your API key like this:
-#    GOOGLE_API_KEY="YOUR_API_KEY_HERE"
-#
-# 4. Save the file and run the Streamlit app.
-
-# --- Configuration ---
-# Load environment variables from the .env file
 load_dotenv()
 
 # Configure the Generative AI library with the API key from environment variables
 try:
-    # Use os.getenv to read the environment variable
+    
     api_key = os.getenv("GOOGLE_API_KEY")
     if not api_key:
         # If the key is not found, raise an error to be caught by the except block

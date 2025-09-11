@@ -89,11 +89,12 @@ Your responses should be concise, encouraging, and based *only* on the informati
 """
 
 # --- API Configuration ---
-# NOTE: The API key should be securely stored and not hardcoded.
+
 API_KEY = os.getenv("GOOGLE_API_KEY", "")
 API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent"
 
 # --- API Endpoint to handle chat messages ---
+
 @app.post("/chat")
 def chat_with_oracle(message_data: ChatMessage):
     """
@@ -103,9 +104,8 @@ def chat_with_oracle(message_data: ChatMessage):
 
     payload = {
         "contents": [
-            # The system prompt is included with the 'user' role.
+            
             {"role": "user", "parts": [{"text": system_prompt}]},
-            # The user's question is also included with the 'user' role.
             {"role": "user", "parts": [{"text": f"User's question: {user_message}"}]}
         ]
     }
